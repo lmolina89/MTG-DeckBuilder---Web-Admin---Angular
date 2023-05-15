@@ -1,5 +1,5 @@
 import { Injectable, isDevMode } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpHeaders} from '@angular/common/http';
 import { Observable, catchError, firstValueFrom, throwError } from 'rxjs';
 import { enviroment } from '../enviroments/enviroment';
 import { ApiAuthBody, ApiAuthResponse } from '../login/login.types';
@@ -16,8 +16,9 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   doLogin(email: string, password: string): void {
-    // let email: string = 'lmolinamoreno@hotmail.com';
-    // let password: string = 'lmolina';
+    const headers = new HttpHeaders({
+      'Origin': 'http://localhost:4200',
+    });
 
     const loginBody: ApiAuthBody = {
       email: email,
@@ -26,7 +27,13 @@ export class AuthService {
     let loginUrl: string = `${this.baseUrl}${enviroment.authRoute}`;
     console.log(loginBody);
 
-    this.http.post()
+    this.http.post('api/api-users/endp/auth',loginBody,{headers}).subscribe(response=>{
+      console.log(response)
+    },
+      (error)=>{
+        console.log(error)
+      }
+    )
     // this.userAuth(loginBody).subscribe((userData) => {
     //   console.log(userData);
     //   this.loggedIn = true;

@@ -1,8 +1,7 @@
 {
-    "/api": {
-      "target": "http://mtgdeckbuilder.redirectme.net:80",
-      "secure": false,
-      "changeOrigin": true
-    }
+  "/api/*":{
+    "target":"http://localhost:80/api-users/endp/",
+    "secure": false,
+    "logLevel": "debug"
   }
-  
+}
