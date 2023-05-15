@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.p-card {
+    width: 30vw; /* Ajusta el ancho deseado */
+    height: 20vw; /* Ajusta la altura deseada */
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .p-inputgroup{
+    height: 3vw;
+    width: 15vw;
+    margin-bottom: 1vw;
+  }
+
+  button{
+    text-align: center;
+  }
+  
+  body{background-color: grey;}
