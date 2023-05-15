@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { AuthService } from './auth/auth.service';
-import { UsersListModule } from './users-list/users-list.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,6 +13,7 @@ import { UsersListModule } from './users-list/users-list.module';
     BrowserModule,
     AppRoutingModule,
     LoginModule,
+    HttpClientModule
     // UsersListModule
   ],
   providers: [AuthService],

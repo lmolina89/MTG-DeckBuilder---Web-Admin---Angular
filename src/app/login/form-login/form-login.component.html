@@ -1,11 +1,11 @@
 <div class="p-card">
-  <form class="p-fluid">
+  <form>
     <div class="p-inputgroup">
-      <input type="text" class="p-inputtext-lg" />
+      <input type="text" class="p-inputtext-lg" name="email" [(ngModel)]="email"/>
     </div>
     <div class="p-inputgroup">
-      <input type="password" class="p-password-input" />
+      <input type="password" class="p-password-input" name="password" [(ngModel)]="password"/>
     </div>
-    <button class="p-button" [routerLink]="['/users']" routerLinkActive="active">Entrar</button>
+    <button class="p-button" (click)="onSubmit()">Entrar</button>
   </form>
 </div>

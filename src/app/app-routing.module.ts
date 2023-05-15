@@ -4,12 +4,12 @@ import { FormLoginComponent } from './login/form-login/form-login.component';
 import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
-  { path: 'login', component: FormLoginComponent }, // Ruta de inicio de sesión
+  { path: 'login', component: FormLoginComponent },                             // Ruta de inicio de sesión
   {
-    path: 'users',
-    // canActivate: [AuthGuard],
+    path: 'users',                                                              //Ruta de lista de usuarios
+    canActivate: [AuthGuard],//comprueba que el usuario ha iniciado sesion para continuar
     loadChildren: () =>
-      import('./users-list/users-list.module').then((m) => m.UsersListModule), // Cargar el módulo users-list
+      import('./users-list/users-list.module').then((m) => m.UsersListModule),  // Cargar el módulo users-list
   },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }, // Redireccionar al componente de inicio de sesión por defecto
 ];

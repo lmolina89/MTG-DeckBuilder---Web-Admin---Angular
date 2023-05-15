@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { Observable, catchError, firstValueFrom, throwError } from 'rxjs';
 import { enviroment } from '../enviroments/enviroment';
+import { ApiAuthBody, ApiAuthResponse } from '../login/login.types';
 
 @Injectable({
   providedIn: 'root',
@@ -14,19 +15,43 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  //hace login en la api
-  doLogin(email: string, password: string): Promise<boolean> {
-    let loginUrl: string = `${this.baseUrl}/${enviroment.authRoute}`;
-    const loginData = {
+  doLogin(email: string, password: string): void {
+    // let email: string = 'lmolinamoreno@hotmail.com';
+    // let password: string = 'lmolina';
+
+    const loginBody: ApiAuthBody = {
       email: email,
-      password: password,
+      passwd: password,
     };
-    console.log(loginData)
-    return firstValueFrom(this.http.post<boolean>(loginUrl, loginData));
+    let loginUrl: string = `${this.baseUrl}${enviroment.authRoute}`;
+    console.log(loginBody);
+
+    this.http.post()
+    // this.userAuth(loginBody).subscribe((userData) => {
+    //   console.log(userData);
+    //   this.loggedIn = true;
+    // });
   }
 
-  public logOut(): void {}
+  //hace login en la api
+  userAuth(loginBody: ApiAuthBody): Observable<ApiAuthResponse> {
+    let loginUrl: string = `${this.baseUrl}${enviroment.authRoute}`;
+    return this.http.post<ApiAuthResponse>(loginUrl, loginBody).pipe(
+      catchError((e) => {
+        if (isDevMode()) {
+          `Error al hacer login ${e}`;
+        }
+        return throwError(e);
+      })
+    );
+  }
 
+  //cerrar sesion
+  public logOut(): void {
+    this.loggedIn = false;
+  }
+
+  //devuelve si esta logeado
   public isLoggedIn(): boolean {
     return this.loggedIn;
   }
