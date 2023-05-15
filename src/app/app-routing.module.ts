@@ -5,12 +5,13 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: FormLoginComponent }, // Ruta de inicio de sesión
-  { 
-    path: 'users', 
-    canActivate: [AuthGuard], // Utilizar la guarda de autenticación
-    loadChildren: () => import('./users-list/users-list.module').then(m => m.UsersListModule) // Cargar el módulo users-list
+  {
+    path: 'users',
+    // canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./users-list/users-list.module').then((m) => m.UsersListModule), // Cargar el módulo users-list
   },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redireccionar al componente de inicio de sesión por defecto
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }, // Redireccionar al componente de inicio de sesión por defecto
 ];
 
 @NgModule({
