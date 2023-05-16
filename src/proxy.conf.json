@@ -1,0 +1,11 @@
+{
+  "/api":{
+    "target":"http://mtgdeckbuilder.redirectme.net:80/api-users/endp/",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

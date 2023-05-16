@@ -16,9 +16,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   doLogin(email: string, password: string): void {
-    const headers = new HttpHeaders({
-      'Origin': 'http://localhost:4200',
-    });
+
 
     const loginBody: ApiAuthBody = {
       email: email,
@@ -27,7 +25,9 @@ export class AuthService {
     let loginUrl: string = `${this.baseUrl}${enviroment.authRoute}`;
     console.log(loginBody);
 
-    this.http.post('api/api-users/endp/auth',loginBody,{headers}).subscribe(response=>{
+    
+    this.http.post('/api/auth',loginBody).subscribe(response=>{
+      // this.http.post('mtgdeckbuilder.redirectme.net:80/api-users/endp/auth',loginBody).subscribe(response=>{
       console.log(response)
     },
       (error)=>{
