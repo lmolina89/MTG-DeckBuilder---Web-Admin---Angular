@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { AuthService } from './auth/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,8 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     LoginModule,
-    HttpClientModule
-    // UsersListModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

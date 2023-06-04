@@ -1,24 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeflex/primeflex.css";
+@import "primeng/resources/themes/bootstrap4-light-blue/theme.css";
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import 'primeng/resources/primeng.min.css';
 
 .p-card {
-    width: 30vw; /* Ajusta el ancho deseado */
-    height: 20vw; /* Ajusta la altura deseada */
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  width: 30vw;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .p-inputgroup{
-    height: 3vw;
-    width: 15vw;
-    margin-bottom: 1vw;
-  }
+.p-inputgroup {
+  height: 3vw;
+  width: 15vw;
+  margin-bottom: 1vw;
+}
 
-  button{
-    text-align: center;
-  }
-  
-  /* body{background-color: grey;} */
+button {
+  text-align: center;
+}
+
+.footer-table{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .loginformemail .loginformpassword{
+  width: 25vw;
+} */
+
+/* .email .password{
+  width: max-content;
+} */
+.input-lg-custom {
+  width: 25vw; /* Establece el ancho deseado */
+}
+body{background-color: grey;}

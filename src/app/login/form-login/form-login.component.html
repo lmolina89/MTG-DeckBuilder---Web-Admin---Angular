@@ -1,11 +1,27 @@
-<div class="p-card">
-  <form>
-    <div class="p-inputgroup">
-      <input type="text" class="p-inputtext-lg" name="email" [(ngModel)]="email"/>
+<div class="card-container pt-5">
+  <p-card>
+    <div class="card-header mb-5 d-flex justify-content-center">
+      <h2>Inicia sesion</h2>
     </div>
-    <div class="p-inputgroup">
-      <input type="password" class="p-password-input" name="password" [(ngModel)]="password"/>
-    </div>
-    <button class="p-button" (click)="onSubmit()">Entrar</button>
-  </form>
+
+    <form (ngSubmit)="onSubmit($event)" class="formbox">
+      <div class=" mb-4 mt-2 mx-4">
+        <span class="p-float-label">
+          <input id="email" pInputText class="p-inputtext-lg input-lg-custom" name="email" [(ngModel)]="email"/>
+          <label for="email">Email</label>
+        </span>
+      </div>
+
+      <div class=" mb-4 mt-2 mx-4">
+        <span class="p-float-label">
+          <input id="password" pPassword class="p-inputtext-lg input-lg-custom" name="password" [(ngModel)]="password"/>
+          <label for="password">Password</label>
+        </span>
+      </div>
+      <p-divider></p-divider>
+      <div class="flex justify-content-center mt-5">
+        <p-button type="submit" label="Entrar" styleClass="p-button-rounded p-button-raised"></p-button>
+      </div>
+    </form>
+  </p-card>
 </div>

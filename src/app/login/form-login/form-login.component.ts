@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from 'src/app/auth/auth.service';
+import {ApiLoginBody} from '../login.types';
 
 @Component({
   selector: 'app-form-login',
@@ -8,12 +9,21 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./form-login.component.css'],
 })
 export class FormLoginComponent {
-  constructor(private authService: AuthService, private router: Router) {}
-  email: string = '';
-  password: string = '';
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  public onSubmit() {
-    console.log(this.email + ' ' + this.password);
-    this.authService.doLogin(this.email, this.password);
+  email: string = 'lmolinamoreno@hotmail.com';
+  password: string = 'lmolina';
+
+  public onSubmit(event: any) {
+    event.preventDefault();
+    this.email = event.target.elements.email.value
+    this.password = event.target.elements.password.value
+    const loginBody: ApiLoginBody = {
+      email: this.email,
+      passwd: this.password
+    }
+    this.authService.doLogin(loginBody)
+
   }
 }
