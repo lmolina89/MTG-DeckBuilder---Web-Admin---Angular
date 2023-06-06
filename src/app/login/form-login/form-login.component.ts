@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from 'src/app/auth/auth.service';
-import {ApiLoginBody} from '../login.types';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ApiLoginBody, LoginFormResponse } from '../login.types';
 
 @Component({
   selector: 'app-form-login',
@@ -11,11 +11,13 @@ import {ApiLoginBody} from '../login.types';
 export class FormLoginComponent {
   constructor(private authService: AuthService, private router: Router) {
   }
+   loginResponse?: LoginFormResponse
+  email: string = 'admin@admin.com';
+  password: string = 'admin';
+  // email: string = 'lmolinamoreno@hotmail.com';
+  // password: string = 'lmolina';
 
-  email: string = 'lmolinamoreno@hotmail.com';
-  password: string = 'lmolina';
-
-  public onSubmit(event: any) {
+  async onSubmit(event: any) {
     event.preventDefault();
     this.email = event.target.elements.email.value
     this.password = event.target.elements.password.value
@@ -23,7 +25,7 @@ export class FormLoginComponent {
       email: this.email,
       passwd: this.password
     }
-    this.authService.doLogin(loginBody)
-
+    this.loginResponse = await this.authService.doLogin(loginBody)
+    console.log(this.loginResponse)
   }
 }

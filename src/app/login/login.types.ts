@@ -9,4 +9,9 @@ export interface ApiLoginBody{
   passwd: string
 }
 
+export interface LoginFormResponse{
+  result?: string
+  admin?: boolean
+  error? : string
+}
 

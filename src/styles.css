@@ -29,14 +29,10 @@ button {
   justify-content: space-between;
 }
 
-/* .loginformemail .loginformpassword{
-  width: 25vw;
-} */
-
-/* .email .password{
-  width: max-content;
-} */
 .input-lg-custom {
   width: 25vw; /* Establece el ancho deseado */
 }
-body{background-color: grey;}
+
+body{background-color: rgb(252, 252, 252);}
+
+
