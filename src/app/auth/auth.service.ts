@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 })
 export class AuthService {
   private loggedIn = false;
-  baseUrl: string = '';
+  private baseUrl: string = '';
 
   constructor(private http: HttpClient, private router: Router) {
     if (isDevMode()) {
@@ -22,7 +22,7 @@ export class AuthService {
 
   doLogin(loginBody: ApiLoginBody): void {
     let loginUrl: string = `${this.baseUrl}${environment.authRoute}`;
-  
+
     this.http.post<ApiLoginResponse>(loginUrl, loginBody).pipe(
       catchError((e) => {
         if (isDevMode()) {
@@ -48,7 +48,7 @@ export class AuthService {
       }
     });
   }
-  
+
 
   public logOut(): void {
     this.loggedIn = false;

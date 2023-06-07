@@ -2,13 +2,13 @@ import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { catchError, Observable, tap, throwError } from "rxjs";
-import { GetUserResponse, User } from "./users-list.types";
+import { GetUserResponse, UpdateUserBody, User } from "./users-list.types";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersListService {
-  baseUrl = '';
+  private baseUrl: string = '';
 
   constructor(private http: HttpClient) {
     if (isDevMode()) {
@@ -32,11 +32,21 @@ export class UsersListService {
     );
   }
 
-  public updateUser() {
 
+  public updateUser(data: UpdateUserBody): Observable<Response> {
+    let updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}`;  
+    return this.http.put<Response>(updateUserUrl, data).pipe(
+      catchError((e) => {
+        if (isDevMode()) {
+          console.error(`Error al editar usuario ${e.message}`);
+        }
+        return throwError(`Error al editar usuario ${e.message}`);
+      })
+    )
   }
+  
 
-  public deleteUser(){
+  public deleteUser() {
 
   }
 }

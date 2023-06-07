@@ -19,3 +19,13 @@ export interface StateOptions {
   label: string
   value: boolean
 }
+
+export interface UpdateUserBody{
+  admin:boolean
+  active:boolean
+}
+
+export interface Response{
+  result?: 'ok'|'error'
+  details?: string
+}

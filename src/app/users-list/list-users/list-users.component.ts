@@ -1,8 +1,8 @@
-import {Component, isDevMode, OnInit} from '@angular/core';
-import {UsersListService} from "../users-list.service";
-import {GetUserResponse, StateOptions, User} from "../users-list.types";
-import {ConfirmationService, MessageService} from "primeng/api";
-import {DialogService} from "primeng/dynamicdialog";
+import { Component, isDevMode, OnInit } from '@angular/core';
+import { UsersListService } from "../users-list.service";
+import { GetUserResponse, StateOptions, UpdateUserBody, User } from "../users-list.types";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { DialogService } from "primeng/dynamicdialog";
 import * as _ from 'lodash'
 
 @Component({
@@ -17,8 +17,8 @@ export class ListUsersComponent implements OnInit {
   activeDelete: boolean = false;
   activeEdit: boolean = false;
   activeNewUser: boolean = false;
-  activeStateOptions: StateOptions[] = [{label: 'Activo', value: true}, {label: 'Inactivo', value: false}]
-  adminStateOptions: StateOptions[] = [{label: 'Si', value: true}, {label: 'No', value: false}]
+  activeStateOptions: StateOptions[] = [{ label: 'Activo', value: true }, { label: 'Inactivo', value: false }]
+  adminStateOptions: StateOptions[] = [{ label: 'Si', value: true }, { label: 'No', value: false }]
 
   constructor(
     private listUsersService: UsersListService,
@@ -37,7 +37,7 @@ export class ListUsersComponent implements OnInit {
   }
 
   public confirmSave() {
-
+    //TODO: dialogo de confirmacion de guardado que llama a esta funcion
   }
 
   public confirmDelete(user: User) {
@@ -48,8 +48,6 @@ export class ListUsersComponent implements OnInit {
       header: 'Confirmar Eliminación',
       icon: 'pi pi-info-circle'
     })
-
-
   }
 
   public editHandler(user: User) {
@@ -68,12 +66,16 @@ export class ListUsersComponent implements OnInit {
     this.activeEdit = true
   }
 
+
+
   public saveHandler() {
     console.log(this.selectedUser);
-    //TODO: dialogo de confirmacion de guardado que llama a esta funcion
+    // this.listUsersService.updateUser(data).subscribe((response:Response)=>{
+
+    // })
     //TODO: Logica para guardar
     this.activeEdit = false;
-    this.messageService.add({severity: 'success', summary: 'Usuario guardado correctamente'});
+    this.messageService.add({ severity: 'success', summary: 'Usuario guardado correctamente' });
     this.selectedUser = new User();
   }
 
@@ -86,11 +88,11 @@ export class ListUsersComponent implements OnInit {
 
     this.loading = false;
     this.activeDelete = false;
-    this.messageService.add({severity: 'success', summary: 'Usuario eliminado correctamente'});
+    this.messageService.add({ severity: 'success', summary: 'Usuario eliminado correctamente' });
   }
 
   public cancelHandler() {
-    this.messageService.add({severity: 'warn', summary: 'Cancelado'});
+    this.messageService.add({ severity: 'warn', summary: 'Cancelado' });
     //limpio la variable selectedUser
     this.selectedUser = new User();
     this.activeDelete = false;
@@ -98,7 +100,7 @@ export class ListUsersComponent implements OnInit {
     console.log(this.activeEdit)
   }
 
-public newUserHandler(){
+  public newUserHandler() {
     console.log('Nuevo usuario...')
-}
+  }
 }
