@@ -2,6 +2,7 @@ export interface ApiLoginResponse {
   result: 'ok' | 'error';
   token: string;
   user_nick: string;
+  admin: boolean;
 }
 
 export interface ApiLoginBody{
@@ -9,9 +10,4 @@ export interface ApiLoginBody{
   passwd: string
 }
 
-export interface LoginFormResponse{
-  result?: string
-  admin?: boolean
-  error? : string
-}
 

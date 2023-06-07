@@ -21,7 +21,6 @@ export class UsersListService {
   public getUsersList(): Observable<GetUserResponse> {
     const finalUrl = `${this.baseUrl}${environment.usersRoute}`;
     let apiKey: string | null = sessionStorage.getItem('api-key');
-    console.log(apiKey)
     const headers = new HttpHeaders().set('api-key', apiKey || '');
     return this.http.get<GetUserResponse>(finalUrl, { headers: headers }).pipe(
       catchError((e) => {
