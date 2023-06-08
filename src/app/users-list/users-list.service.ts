@@ -32,25 +32,33 @@ export class UsersListService {
     );
   }
 
-  public updateUser(user: User): Observable<Response> {
-    let updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}/${user.id}`;
+  public updateUser(user: User): Observable<any> {
+    let updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${user.id}`;
     const updateBody = {
+      email: user.email,
+      passwd: user.passwd,
       admin: user.admin,
-      active: user.active
-    }    
-    return this.http.put<Response>(updateUserUrl, updateBody).pipe(
-      catchError((e) => {
-        if (isDevMode()) {
-          console.error(`Error al editar usuario ${e.message}`);
-        }
-        return throwError(`Error al editar usuario ${e.message}`);
-      })
-    );
+      active: user.active,
+    };
+    let apiKey: string | null = sessionStorage.getItem('api-key');
+    const headers = new HttpHeaders().set('api-key', apiKey || '');
+    return this.http
+      .put<any>(updateUserUrl, updateBody, { headers: headers })
+      .pipe(
+        catchError((e) => {
+          if (isDevMode()) {
+            console.error(`Error al editar usuario ${e.message}`);
+          }
+          return throwError(`Error al editar usuario ${e.message}`);
+        })
+      );
   }
 
   public deleteUser(id: number) {
     let deleteUserUrl: string = `${this.baseUrl}${environment.usersRoute}/${id}`;
-    return this.http.delete<Response>(deleteUserUrl).pipe(
+    let apiKey: string | null = sessionStorage.getItem('api-key');
+    const headers = new HttpHeaders().set('api-key', apiKey || '');
+    return this.http.delete<Response>(deleteUserUrl, { headers: headers }).pipe(
       catchError((e) => {
         if (isDevMode()) {
           console.error(`Error al eliminar usuario ${e.message}`);

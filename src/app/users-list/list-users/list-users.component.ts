@@ -59,7 +59,7 @@ export class ListUsersComponent implements OnInit {
     }
     if (this.activeEdit) {
       console.log('edit');
-        this.saveHandler();      
+      this.saveHandler();
       //TODO: borrar toast despues de implementar la logica
       this.messageService.add({
         severity: 'success',
@@ -146,25 +146,27 @@ export class ListUsersComponent implements OnInit {
   //funciones de guardar y borrar//
   //guardar usuario editado o nuevo
   public saveHandler() {
-    const updateBody:User = this.selectedUser;
+    const updateBody: User = this.selectedUser;
     if (this.activeEdit) {
       console.log('editando usuario...');
-      this.listUsersService.updateUser(updateBody).subscribe((response:Response)=>{
-          console.log(response)
+      this.listUsersService
+        .updateUser(updateBody)
+        .subscribe((response: any) => {
+          console.log(response);
           // this.messageService.add({
           //   severity: 'success',
           //   summary: 'Usuario editado correctamente',
           // });
           this.loading = false;
-      })
-      //TODO: Logica para guardar 
+        });
+      //TODO: Logica para guardar
     }
     if (this.activeNewUser) {
       console.log('creando usuario...');
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Usuario creado correctamente',
-      });
+      // this.messageService.add({
+      //   severity: 'success',
+      //   summary: 'Usuario creado correctamente',
+      // });
     }
     this.activeEdit = false;
     this.activeNewUser = false;
