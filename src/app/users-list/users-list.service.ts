@@ -65,15 +65,17 @@ export class UsersListService {
     return this.http.post<any>(createUrl, registerBody).pipe(
       catchError((e) => {
         if (isDevMode()) {
-          console.error(`Error al crear usuario ${e.message}`);
+          console.error(`Error al crear usuario `);
+          console.log(e)
         }
         return throwError(`Error al crear usuario ${e.message}`);
       })
     )
+
   }
 
   public deleteUser(id: number) {
-    let deleteUserUrl: string = `${this.baseUrl}${environment.usersRoute}/${id}`;
+    let deleteUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${id}`;
     let apiKey: string | null = sessionStorage.getItem('api-key');
     const headers = new HttpHeaders().set('api-key', apiKey || '');
     return this.http.delete<Response>(deleteUserUrl, { headers: headers }).pipe(

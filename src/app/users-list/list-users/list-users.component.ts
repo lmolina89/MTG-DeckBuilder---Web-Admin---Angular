@@ -1,15 +1,14 @@
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsersListService } from '../users-list.service';
 import {
   GetUserResponse,
-  RegisterResponse,
   StateOptions,
-  UpdateUserBody,
   User,
 } from '../users-list.types';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import * as _ from 'lodash';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-users',
@@ -36,7 +35,9 @@ export class ListUsersComponent implements OnInit {
   constructor(
     private listUsersService: UsersListService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -169,7 +170,7 @@ export class ListUsersComponent implements OnInit {
               summary: 'Usuario creado correctamente',
             });
           }
-          
+
           //recarga la lista de usuarios
           this.updateUsersList();
           //borra los datos del formulario
@@ -184,15 +185,21 @@ export class ListUsersComponent implements OnInit {
   public deleteUser(id: number | undefined) {
     this.loading = true;
     let userId = id || 0;
-
-    console.log(userId);
-    //TODO: Logica para eliminar usuario llamando al service
-
-    this.loading = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Usuario eliminado correctamente',
-    });
+    this.listUsersService.deleteUser(userId)
+      .subscribe((response: any) => {
+        if (response.result == 'ok') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Usuario eliminado correctamente',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'No se ha eliminado el usuario',
+          });
+        }
+        this.updateUsersList();
+      })
     this.activeDelete = false;
   }
 
@@ -208,5 +215,17 @@ export class ListUsersComponent implements OnInit {
         this.usersList = response.usuarios;
         this.loading = false;
       });
+  }
+
+  //cerrar sesion
+  logOut() {
+    this.loading = true;
+    this.authService.logOut();
+    //delay para que no cambie de ventana demasiado rapido
+    _.delay(
+      () => { this.router.navigate(['login']) },
+      500,
+      () => { this.loading = false }
+    )
   }
 }
