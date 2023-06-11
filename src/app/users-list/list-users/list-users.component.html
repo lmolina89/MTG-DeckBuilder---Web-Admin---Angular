@@ -10,12 +10,14 @@
         <th>Imagen</th>
         <th>Activo</th>
         <th>Administrador</th>
-        <th></th>
         <th>
           <!--        boton nuevo usuario-->
           <p-button label="Crear usuario" styleClass="p-button-outlined p-button-help p-button-sm"
-            (click)="newUserHandler()">
+            (click)="newUserHandler()" title="Crear usuario">
           </p-button>
+        </th>
+        <th class="flex justify-content-end">
+          <p-button icon="pi pi-sign-out" styleClass="p-button-sm p-button-danger" title="Cerrar sesion"></p-button>
         </th>
       </tr>
     </ng-template>
@@ -30,13 +32,15 @@
         <!--      boton editar-->
         <td>
           <p-button icon="pi pi-user-edit" label="Editar"
-            styleClass="p-button-rounded p-button-raised p-button-secondary p-button-sm" (click)="editHandler(user)">
+            styleClass="p-button-rounded p-button-raised p-button-secondary p-button-sm" (click)="editHandler(user)"
+            title="Editar usuario">
           </p-button>
         </td>
         <!--      boton eliminar-->
         <td>
           <p-button icon="pi pi-times" label="Eliminar"
-            styleClass="p-button-rounded p-button-raised p-button-danger p-button-sm" (click)="confirmDelete(user)">
+            styleClass="p-button-rounded p-button-raised p-button-danger p-button-sm" (click)="confirmDelete(user)"
+            title="Eliminar usuario">
           </p-button>
         </td>
       </tr>
@@ -103,11 +107,12 @@
       <p-divider></p-divider>
       <!-- botones de guardar y cancelar -->
       <div class="flex justify-content-between mt-5">
-        <p-button type="button" label="Guardar" styleClass="p-button-raised ml-8" (click)="confirmEditSave()">
+        <p-button type="button" label="Guardar" styleClass="p-button-raised ml-8" (click)="confirmEditSave()"
+          title="Guardar los cambios">
         </p-button>
         <p-button type="button" label="Cancelar" styleClass="
         p-button-raised
-        p-button-danger mr-8" (click)="cancelHandler()">
+        p-button-danger mr-8" (click)="cancelHandler()" title="Cancelar edicion">
         </p-button>
       </div>
     </form>
@@ -146,18 +151,18 @@
       <p-divider></p-divider>
       <!-- botones de guardar y cancelar -->
       <div class="flex justify-content-between mt-5">
-        <p-button type="button" label="Guardar" styleClass="p-button-raised ml-8" (click)="confirmCreateSave()">
+        <p-button type="button" label="Guardar" styleClass="p-button-raised ml-8" (click)="confirmCreateSave()"
+          title="Guardar nuevo usuario">
         </p-button>
         <p-button type="button" label="Cancelar" styleClass="
         p-button-raised
-        p-button-danger mr-8" (click)="cancelHandler()">
+        p-button-danger mr-8" (click)="cancelHandler()" title="Cancelar crear usuario">
         </p-button>
       </div>
     </form>
   </p-dialog>
 </ng-container>
 <!--          fin formulario nuevo usuario           -->
-
 
 <!--          dialogo de confirmacion         -->
 <p-confirmDialog [style]="{ width: '50vw' }" [acceptLabel]="'Confirmar'" [rejectLabel]="'Cancelar'">

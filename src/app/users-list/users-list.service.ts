@@ -2,7 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { GetUserResponse, UpdateUserBody, User } from './users-list.types';
+import { GetUserResponse, RegisterResponse, RegisterUserBody, UpdateUserBody, User } from './users-list.types';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,7 @@ export class UsersListService {
   }
 
   public updateUser(user: User): Observable<any> {
-    let updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${user.id}`;
+    const updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${user.id}`;
     const updateBody = {
       email: user.email,
       passwd: user.passwd,
@@ -52,6 +52,24 @@ export class UsersListService {
           return throwError(`Error al editar usuario ${e.message}`);
         })
       );
+  }
+
+  public createUser(user: User): Observable<any> {
+    const createUrl: string = `${this.baseUrl}${environment.registerRoute}`;
+    const registerBody: RegisterUserBody = {
+      email: user.email,
+      passwd: user.passwd,
+      nick: user.nick ?? ''
+    }
+    console.log(registerBody)
+    return this.http.post<any>(createUrl, registerBody).pipe(
+      catchError((e) => {
+        if (isDevMode()) {
+          console.error(`Error al crear usuario ${e.message}`);
+        }
+        return throwError(`Error al crear usuario ${e.message}`);
+      })
+    )
   }
 
   public deleteUser(id: number) {

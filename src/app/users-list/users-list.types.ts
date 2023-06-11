@@ -23,6 +23,17 @@ export interface StateOptions {
   value: boolean
 }
 
+export interface RegisterUserBody{
+  email: string;
+  passwd: string;
+  nick: string;
+}
+
+export interface RegisterResponse{
+  result: string;
+  insert_id: number;
+}
+
 export interface UpdateUserBody {
   admin: boolean
   active: boolean

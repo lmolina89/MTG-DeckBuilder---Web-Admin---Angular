@@ -2,6 +2,7 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { UsersListService } from '../users-list.service';
 import {
   GetUserResponse,
+  RegisterResponse,
   StateOptions,
   UpdateUserBody,
   User,
@@ -40,12 +41,7 @@ export class ListUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.listUsersService
-      .getUsersList()
-      .subscribe((response: GetUserResponse) => {
-        this.usersList = response.usuarios;
-        this.loading = false;
-      });
+    this.updateUsersList()
   }
 
   //botones de dialogos de confirmacion//
@@ -143,39 +139,42 @@ export class ListUsersComponent implements OnInit {
   //funciones de guardar y borrar//
   //guardar usuario editado o nuevo
   public saveHandler() {
-    const updateBody: User = this.selectedUser;
     //Guardar usuario editado
     if (this.activeEdit) {
       console.log('editando usuario...');
       //guarda el usuario editado
       this.listUsersService
-        .updateUser(updateBody)
+        .updateUser(this.selectedUser)
         .subscribe((response: any) => {
-          console.log(response);
           if (response.result == 'ok') {
             this.messageService.add({
               severity: 'success',
               summary: 'Usuario editado correctamente',
             });
-          } 
-          //recarga la lista de usuarios
-          this.listUsersService
-            .getUsersList()
-            .subscribe((response: GetUserResponse) => {
-              this.usersList = response.usuarios;
-              this.loading = false;
-            });
+          }
 
+          //recarga la lista de usuarios
+          this.updateUsersList()
+          //borra los datos del formulario
           this.selectedUser = new User();
         });
     }
     if (this.activeNewUser) {
       console.log('creando usuario...');
-      console.log(this.newUser);
-      // this.messageService.add({
-      //   severity: 'success',
-      //   summary: 'Usuario creado correctamente',
-      // });
+      this.listUsersService.createUser(this.newUser)
+        .subscribe((response: any) => {
+          if (response.result == 'ok') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Usuario creado correctamente',
+            });
+          }
+          
+          //recarga la lista de usuarios
+          this.updateUsersList();
+          //borra los datos del formulario
+          this.newUser = new User();
+        })
     }
     this.activeEdit = false;
     this.activeNewUser = false;
@@ -200,5 +199,14 @@ export class ListUsersComponent implements OnInit {
   public newUserHandler() {
     console.log('Nuevo usuario...');
     this.activeNewUser = true;
+  }
+
+  private updateUsersList(): void {
+    this.listUsersService
+      .getUsersList()
+      .subscribe((response: GetUserResponse) => {
+        this.usersList = response.usuarios;
+        this.loading = false;
+      });
   }
 }
