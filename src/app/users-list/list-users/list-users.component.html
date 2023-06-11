@@ -1,178 +1,166 @@
-<p-table
-  [tableStyle]="{ 'min-width': '50rem' }"
-  [value]="usersList"
-  [loading]="loading"
-  [rows]="10"
-  [paginator]="true"
-  [rowsPerPageOptions]="[5, 10, 20]"
->
-  <!--  header-->
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Nick</th>
-      <th>Email</th>
-      <th>Imagen</th>
-      <th>Activo</th>
-      <th>Administrador</th>
-      <th></th>
-      <th>
-        <!--        boton nuevo usuario-->
-        <p-button
-          label="Crear usuario"
-          styleClass="p-button-outlined p-button-help p-button-sm"
-          (click)="newUserHandler()"
-        >
-        </p-button>
-      </th>
-    </tr>
-  </ng-template>
-  <!--  datos de la tabla-->
-  <ng-template pTemplate="body" let-user>
-    <tr>
-      <td>{{ user.nick }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.imgUri }}</td>
-      <td>{{ user.active == 1 ? "si" : "no" }}</td>
-      <td>{{ user.admin == 1 ? "si" : "no" }}</td>
-
-      <!--      boton editar-->
-      <td>
-        <p-button
-          icon="pi pi-user-edit"
-          label="Editar"
-          styleClass="p-button-rounded p-button-raised p-button-secondary p-button-sm"
-          (click)="editHandler(user)"
-        >
-        </p-button>
-      </td>
-      <!--      boton eliminar-->
-      <td>
-        <p-button
-          icon="pi pi-times"
-          label="Eliminar"
-          styleClass="p-button-rounded p-button-raised p-button-danger p-button-sm"
-          (click)="confirmDelete(user)"
-        >
-        </p-button>
-      </td>
-    </tr>
-  </ng-template>
-
-  <!--  footer-->
-  <ng-template pTemplate="summary">
-    <div class="d-flex justify-content-start align-items-center">
-      <div class="mx-4">
-        Existen {{ usersList ? usersList.length : 0 }} usuarios.
+<div class="p-2">
+  <!--          lista de usuarios           -->
+  <p-table [tableStyle]="{ 'min-width': '50rem' }" [value]="usersList" [loading]="loading" [rows]="10"
+    [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]">
+    <!--  header-->
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nick</th>
+        <th>Email</th>
+        <th>Imagen</th>
+        <th>Activo</th>
+        <th>Administrador</th>
+        <th></th>
+        <th>
+          <!--        boton nuevo usuario-->
+          <p-button label="Crear usuario" styleClass="p-button-outlined p-button-help p-button-sm"
+            (click)="newUserHandler()">
+          </p-button>
+        </th>
+      </tr>
+    </ng-template>
+    <!--  datos de la tabla-->
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.nick }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.imgUri }}</td>
+        <td>{{ user.active == 1 ? "si" : "no" }}</td>
+        <td>{{ user.admin == 1 ? "si" : "no" }}</td>
+        <!--      boton editar-->
+        <td>
+          <p-button icon="pi pi-user-edit" label="Editar"
+            styleClass="p-button-rounded p-button-raised p-button-secondary p-button-sm" (click)="editHandler(user)">
+          </p-button>
+        </td>
+        <!--      boton eliminar-->
+        <td>
+          <p-button icon="pi pi-times" label="Eliminar"
+            styleClass="p-button-rounded p-button-raised p-button-danger p-button-sm" (click)="confirmDelete(user)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <!--  footer-->
+    <ng-template pTemplate="summary">
+      <div class="d-flex justify-content-start align-items-center">
+        <div class="mx-4">
+          Existen {{ usersList ? usersList.length : 0 }} usuarios.
+        </div>
       </div>
-    </div>
-  </ng-template>
-</p-table>
+    </ng-template>
+  </p-table>
+  <!--          fin lista de usuarios           -->
+</div>
 
-<!--formulario de edicion-->
+<!--          formulario de editar         -->
 <ng-container *ngIf="activeEdit">
-  <p-dialog
-    header="Editar usuario"
-    [(visible)]="activeEdit"
-    [style]="{ width: '45vw' }"
-    [closable]="true"
-  >
+  <p-dialog header="Editar usuario" [(visible)]="activeEdit" [style]="{ width: '45vw' }" [closable]="true">
     <form class="formbox">
-      <div class="mb-4 mt-2 mx-4 d-flex justify-content-between">
-        <span class="p-float-label">
-          <input
-            id="email"
-            pInputText
-            class="p-inputtext-lg"
-            name="email"
-            [disabled]="true"
-            [(ngModel)]="selectedUser.email"
-          />
-          <label for="email">Email</label>
-        </span>
-        <span class="p-float-label">
-          <input
-            id="nick"
-            pInputText
-            class="p-inputtext-lg"
-            name="nick"
-            [disabled]="true"
-            [(ngModel)]="selectedUser.nick"
-          />
-          <label for="nick">Nick</label>
-        </span>
+      <div class="mb-4 mt-2 mx-4 d-flex justify-content-around">
+        <!-- input email -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input id="email" pInputText class="p-inputtext-lg" name="email" [(ngModel)]="selectedUser.email"
+              [disabled]="true" />
+            <label for="email" class="mb-3 font-bold">Email</label>
+          </span>
+        </div>
+        <!-- input nick -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input id="nick" pInputText class="p-inputtext-lg" name="nick" [(ngModel)]="selectedUser.nick"
+              [disabled]="true" />
+            <label for="nick" class="mb-3 font-bold">Nick</label>
+          </span>
+        </div>
       </div>
-      <div class="mb-4 mt-2 mx-4 d-flex justify-content-between">
-        <span class="p-float-label">
-          <input
-            pInputText
-            id="imageUri"
-            class="p-inputtext-lg"
-            name="imageUri"
-            [disabled]="true"
-            [(ngModel)]="selectedUser.imageUri"
-          />
-          <label for="imageUri">Imagen</label>
-        </span>
-        <p-image
-          *ngIf="selectedUser.imageUri"
-          [src]="selectedUser.imageUri ? selectedUser.imageUri : ''"
-          alt="Image"
-          width="100"
-          [preview]="true"
-        >
-        </p-image>
-      </div>
-<!-- TODO: detectar si el formulario se ha editado para confirmar y si no se han hecho cambios se cancela -->
+      <!-- TODO: detectar si el formulario se ha editado para confirmar y si no se han hecho cambios se cancela sin preguntar y el boton de guardar se desactiva -->
       <div class="flex justify-content-around mt-5">
-        <p-selectButton
-          name="active"
-          [options]="activeStateOptions"
-          [(ngModel)]="selectedUser.active"
-          optionLabel="label"
-          optionValue="value"
-        >
-        </p-selectButton>
-        <p-selectButton
-          name="admin"
-          [options]="adminStateOptions"
-          [(ngModel)]="selectedUser.admin"
-          optionLabel="label"
-          optionValue="value"
-        >
-        </p-selectButton>
+        <!-- boton seleccion activo -->
+        <div>
+          <div class="flex justify-content-center">
+            <label for="active" class="mb-3 font-bold">Activo</label>
+          </div>
+          <div>
+            <p-selectButton name="active" [options]="activeStateOptions" [(ngModel)]="selectedUser.active"
+              optionLabel="label" optionValue="value">
+            </p-selectButton>
+          </div>
+        </div>
+        <!-- boton seleccion admin -->
+        <div>
+          <div class="flex justify-content-center">
+            <label for="admin" class="mb-3 font-bold">Administrador</label>
+          </div>
+          <div>
+            <p-selectButton name="admin" [options]="adminStateOptions" [(ngModel)]="selectedUser.admin"
+              optionLabel="label" optionValue="value">
+            </p-selectButton>
+          </div>
+        </div>
       </div>
-
       <p-divider></p-divider>
-
-      <div class="flex justify-content-around mt-5">
-        <p-button
-          type="button"
-          label="Guardar"
-          styleClass="
-        p-button-raised"
-          (click)="confirmEditSave()"
-        >
+      <!-- botones de guardar y cancelar -->
+      <div class="flex justify-content-between mt-5">
+        <p-button type="button" label="Guardar" styleClass="p-button-raised ml-8" (click)="confirmEditSave()">
         </p-button>
-        <p-button
-          type="button"
-          label="Cancelar"
-          styleClass="
+        <p-button type="button" label="Cancelar" styleClass="
         p-button-raised
-        p-button-danger"
-          (click)="cancelHandler()"
-        >
+        p-button-danger mr-8" (click)="cancelHandler()">
         </p-button>
       </div>
     </form>
   </p-dialog>
 </ng-container>
+<!--          fin formulario editar           -->
 
-<!--dialogo de confirmacion-->
-<p-confirmDialog
-  [style]="{ width: '50vw' }"
-  [acceptLabel]="'Confirmar'"
-  [rejectLabel]="'Cancelar'"  
->
+<!--          formulario nuevo usuario           -->
+<ng-container *ngIf="activeNewUser">
+  <p-dialog header="Crear nuevo usuario" [(visible)]="activeNewUser" [style]="{ width: '30vw' }" [closable]="true">
+    <form class="formbox">
+      <div class="mb-4 mt-2 mx-4 d-flex flex-column ">
+        <!-- input email -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input id="email" pInputText class="p-inputtext-lg" name="email" type="email" [(ngModel)]="newUser.email" />
+            <label for="email" class="mb-3 font-bold">Email</label>
+          </span>
+        </div>
+        <!-- input password -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input id="password" type="password" pPassword class="p-inputtext-lg" name="password"
+              [(ngModel)]="newUser.passwd" />
+            <label for="password" class="mb-3 font-bold">Password</label>
+          </span>
+        </div>
+        <!-- input nick -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input id="nick" pInputText class="p-inputtext-lg" name="nick" type="text" [(ngModel)]="newUser.nick" />
+            <label for="nick" class="mb-3 font-bold">Nick</label>
+          </span>
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <!-- botones de guardar y cancelar -->
+      <div class="flex justify-content-between mt-5">
+        <p-button type="button" label="Guardar" styleClass="p-button-raised ml-8" (click)="confirmCreateSave()">
+        </p-button>
+        <p-button type="button" label="Cancelar" styleClass="
+        p-button-raised
+        p-button-danger mr-8" (click)="cancelHandler()">
+        </p-button>
+      </div>
+    </form>
+  </p-dialog>
+</ng-container>
+<!--          fin formulario nuevo usuario           -->
+
+
+<!--          dialogo de confirmacion         -->
+<p-confirmDialog [style]="{ width: '50vw' }" [acceptLabel]="'Confirmar'" [rejectLabel]="'Cancelar'">
 </p-confirmDialog>
 
 <p-toast position="top-center"></p-toast>

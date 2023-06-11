@@ -1,13 +1,16 @@
 export class User {
-  id?: number = 0
+  id?: number
   email: string = ''
   passwd: string = ''
   nick?: string
   imageUri?: string
   token?: string
-  active?: boolean |number
+  active?: boolean | number
   admin?: boolean | number
-
+  constructor(active:boolean = true, admin:boolean = false) {
+    this.active = active;
+    this.admin = admin;
+  }
 }
 
 export interface GetUserResponse {
@@ -20,12 +23,12 @@ export interface StateOptions {
   value: boolean
 }
 
-export interface UpdateUserBody{
-  admin:boolean
-  active:boolean
+export interface UpdateUserBody {
+  admin: boolean
+  active: boolean
 }
 
-export interface Response{
-  result?: 'ok'|'error'
+export interface Response {
+  result?: 'ok' | 'error'
   details?: string
 }

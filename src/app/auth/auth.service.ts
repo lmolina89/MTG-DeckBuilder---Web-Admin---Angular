@@ -31,7 +31,7 @@ export class AuthService {
         return throwError(`Error al hacer login ${e.message}`);
       })
     ).subscribe((userData) => {
-      //TODO: Guardar token en localstorage
+      console.log(userData)
       if (userData.admin == true) {
         this.loggedIn = true;
         sessionStorage.setItem('api-key', userData.token);

@@ -12,10 +12,10 @@ export class FormLoginComponent {
   constructor(private authService: AuthService, private router: Router) {
   }
 
-  // email: string = 'lmolinamoreno@hotmail.com';
-  // password: string = 'lmolina';
-  email: string = 'admin@admin.com';
-  password: string = 'admin';
+  email: string = 'lmolinamoreno@hotmail.com';
+  password: string = 'lmolina';
+  // email: string = 'admin@admin.com';
+  // password: string = 'admin';
 
   public onSubmit(event: any) {
     event.preventDefault();

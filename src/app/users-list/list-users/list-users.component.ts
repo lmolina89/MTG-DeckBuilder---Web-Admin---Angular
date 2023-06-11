@@ -18,6 +18,7 @@ import * as _ from 'lodash';
 export class ListUsersComponent implements OnInit {
   usersList: User[] = [];
   selectedUser: User = new User();
+  newUser: User = new User();
   loading: boolean = false;
   activeDelete: boolean = false;
   activeEdit: boolean = false;
@@ -35,7 +36,7 @@ export class ListUsersComponent implements OnInit {
     private listUsersService: UsersListService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -60,16 +61,12 @@ export class ListUsersComponent implements OnInit {
     if (this.activeEdit) {
       console.log('edit');
       this.saveHandler();
-      //TODO: borrar toast despues de implementar la logica
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Usuario editado correctamente',
-      });
       return;
     }
     if (this.activeNewUser) {
       console.log('new user');
-      console.log(this.selectedUser);
+
+      this.saveHandler();
       //TODO: borrar toast despues de implementar la logica
       this.messageService.add({
         severity: 'success',
@@ -147,22 +144,34 @@ export class ListUsersComponent implements OnInit {
   //guardar usuario editado o nuevo
   public saveHandler() {
     const updateBody: User = this.selectedUser;
+    //Guardar usuario editado
     if (this.activeEdit) {
       console.log('editando usuario...');
+      //guarda el usuario editado
       this.listUsersService
         .updateUser(updateBody)
         .subscribe((response: any) => {
           console.log(response);
-          // this.messageService.add({
-          //   severity: 'success',
-          //   summary: 'Usuario editado correctamente',
-          // });
-          this.loading = false;
+          if (response.result == 'ok') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Usuario editado correctamente',
+            });
+          } 
+          //recarga la lista de usuarios
+          this.listUsersService
+            .getUsersList()
+            .subscribe((response: GetUserResponse) => {
+              this.usersList = response.usuarios;
+              this.loading = false;
+            });
+
+          this.selectedUser = new User();
         });
-      //TODO: Logica para guardar
     }
     if (this.activeNewUser) {
       console.log('creando usuario...');
+      console.log(this.newUser);
       // this.messageService.add({
       //   severity: 'success',
       //   summary: 'Usuario creado correctamente',
@@ -170,8 +179,6 @@ export class ListUsersComponent implements OnInit {
     }
     this.activeEdit = false;
     this.activeNewUser = false;
-
-    this.selectedUser = new User();
   }
 
   //eliminar usuario
@@ -192,5 +199,6 @@ export class ListUsersComponent implements OnInit {
 
   public newUserHandler() {
     console.log('Nuevo usuario...');
+    this.activeNewUser = true;
   }
 }
