@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersListService } from '../users-list.service';
-import {
-  GetUserResponse,
-  StateOptions,
-  User,
-} from '../users-list.types';
+import { GetUserResponse, StateOptions, User } from '../users-list.types';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import * as _ from 'lodash';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -23,10 +19,14 @@ export class ListUsersComponent implements OnInit {
   activeDelete: boolean = false;
   activeEdit: boolean = false;
   activeNewUser: boolean = false;
+  formEdit: boolean = false;
+  formCreate: boolean = false;
+
   activeStateOptions: StateOptions[] = [
     { label: 'Activo', value: true },
     { label: 'Inactivo', value: false },
   ];
+
   adminStateOptions: StateOptions[] = [
     { label: 'Si', value: true },
     { label: 'No', value: false },
@@ -38,11 +38,11 @@ export class ListUsersComponent implements OnInit {
     private messageService: MessageService,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
-    this.updateUsersList()
+    this.updateUsersList();
   }
 
   //botones de dialogos de confirmacion//
@@ -91,7 +91,6 @@ export class ListUsersComponent implements OnInit {
       header: 'Confirmar Edicion de usuario',
       icon: 'pi pi-info-circle',
       accept: () => this.acceptHandler(),
-      reject: () => this.cancelHandler(),
     });
     //TODO: dialogo de confirmacion de guardado que llama a esta funcion
   }
@@ -103,7 +102,6 @@ export class ListUsersComponent implements OnInit {
       header: 'Confirmar nuevo usuario',
       icon: 'pi pi-info-circle',
       accept: () => this.acceptHandler(),
-      reject: () => this.cancelHandler(),
     });
     //TODO: dialogo de confirmacion de guardado que llama a esta funcion
   }
@@ -116,7 +114,6 @@ export class ListUsersComponent implements OnInit {
       header: 'Confirmar Eliminación',
       icon: 'pi pi-info-circle',
       accept: () => this.deleteUser(user.id),
-      reject: () => this.cancelHandler(),
     });
   }
 
@@ -155,14 +152,15 @@ export class ListUsersComponent implements OnInit {
           }
 
           //recarga la lista de usuarios
-          this.updateUsersList()
+          this.updateUsersList();
           //borra los datos del formulario
           this.selectedUser = new User();
         });
     }
     if (this.activeNewUser) {
       console.log('creando usuario...');
-      this.listUsersService.createUser(this.newUser)
+      this.listUsersService
+        .createUser(this.newUser)
         .subscribe((response: any) => {
           if (response.result == 'ok') {
             this.messageService.add({
@@ -175,7 +173,7 @@ export class ListUsersComponent implements OnInit {
           this.updateUsersList();
           //borra los datos del formulario
           this.newUser = new User();
-        })
+        });
     }
     this.activeEdit = false;
     this.activeNewUser = false;
@@ -185,21 +183,20 @@ export class ListUsersComponent implements OnInit {
   public deleteUser(id: number | undefined) {
     this.loading = true;
     let userId = id || 0;
-    this.listUsersService.deleteUser(userId)
-      .subscribe((response: any) => {
-        if (response.result == 'ok') {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Usuario eliminado correctamente',
-          });
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'No se ha eliminado el usuario',
-          });
-        }
-        this.updateUsersList();
-      })
+    this.listUsersService.deleteUser(userId).subscribe((response: any) => {
+      if (response.result == 'ok') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Usuario eliminado correctamente',
+        });
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'No se ha eliminado el usuario',
+        });
+      }
+      this.updateUsersList();
+    });
     this.activeDelete = false;
   }
 
@@ -223,9 +220,18 @@ export class ListUsersComponent implements OnInit {
     this.authService.logOut();
     //delay para que no cambie de ventana demasiado rapido
     _.delay(
-      () => { this.router.navigate(['login']) },
+      () => {
+        this.router.navigate(['login']);
+      },
       500,
-      () => { this.loading = false }
-    )
+      () => {
+        this.loading = false;
+      }
+    );
+  }
+
+  checkFormValidity() {
+    this.formCreate =
+      !!this.newUser.email && !!this.newUser.passwd && !!this.newUser.nick;
   }
 }
