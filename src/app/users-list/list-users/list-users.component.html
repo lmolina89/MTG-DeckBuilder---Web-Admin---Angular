@@ -208,36 +208,51 @@
             <label for="email" class="mb-3 font-bold">Email</label>
           </span>
         </div>
-        <!-- input password -->
-        <div class="d-flex justify-content-center my-3">
-          <span class="p-float-label">
-            <input
-              id="password"
-              type="password"
-              pPassword
-              class="p-inputtext-lg"
-              name="password"
-              [(ngModel)]="newUser.passwd"
-              (ngModelChange)="checkFormValidity()"
-            />
-            <label for="password" class="mb-3 font-bold">Password</label>
-          </span>
-        </div>
-        <!-- input nick -->
-        <div class="d-flex justify-content-center my-3">
-          <span class="p-float-label">
-            <input
-              id="nick"
-              pInputText
-              class="p-inputtext-lg"
-              name="nick"
-              type="text"
-              [(ngModel)]="newUser.nick"
-              (ngModelChange)="checkFormValidity()"
-            />
-            <label for="nick" class="mb-3 font-bold">Nick</label>
-          </span>
-        </div>
+      </div>
+      <div class="h-1rem flex justify-content-center">
+        <p *ngIf="errorEmail" class="text-900 text-red-500 font-bold">
+          {{ errorEmail }}
+        </p>
+      </div>
+      <!-- input password -->
+      <div class="d-flex justify-content-center my-3">
+        <span class="p-float-label">
+          <input
+            id="password"
+            type="password"
+            pPassword
+            class="p-inputtext-lg"
+            name="password"
+            [(ngModel)]="newUser.passwd"
+            (ngModelChange)="checkFormValidity()"
+          />
+          <label for="password" class="mb-3 font-bold">Password</label>
+        </span>
+      </div>
+      <div class="h-1rem flex justify-content-center">
+        <p *ngIf="errorPass" class="text-900 text-red-500 font-bold">
+          {{ errorPass }}
+        </p>
+      </div>
+      <!-- input nick -->
+      <div class="d-flex justify-content-center my-3">
+        <span class="p-float-label">
+          <input
+            id="nick"
+            pInputText
+            class="p-inputtext-lg"
+            name="nick"
+            type="text"
+            [(ngModel)]="newUser.nick"
+            (ngModelChange)="checkFormValidity()"
+          />
+          <label for="nick" class="mb-3 font-bold">Nick</label>
+        </span>
+      </div>
+      <div class="h-1rem flex justify-content-center">
+        <p *ngIf="errorNick" class="text-900 text-red-500 font-bold">
+          {{ errorNick }}
+        </p>
       </div>
       <p-divider></p-divider>
       <!-- botones de guardar y cancelar -->

@@ -5,6 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import * as _ from 'lodash';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-list-users',
@@ -21,6 +22,9 @@ export class ListUsersComponent implements OnInit {
   activeNewUser: boolean = false;
   formEdit: boolean = false;
   formCreate: boolean = false;
+  errorEmail: string = '';
+  errorPass: string = '';
+  errorNick: string = '';
 
   activeStateOptions: StateOptions[] = [
     { label: 'Activo', value: true },
@@ -48,27 +52,17 @@ export class ListUsersComponent implements OnInit {
   //botones de dialogos de confirmacion//
   //boton aceptar
   acceptHandler() {
-    console.log('Accept handler');
     this.loading = true;
     if (this.activeDelete) {
-      console.log('delete');
       this.deleteUser(this.selectedUser.id);
       return;
     }
     if (this.activeEdit) {
-      console.log('edit');
       this.saveHandler();
       return;
     }
     if (this.activeNewUser) {
-      console.log('new user');
-
       this.saveHandler();
-      //TODO: borrar toast despues de implementar la logica
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Usuario creado correctamente',
-      });
       return;
     }
   }
@@ -81,6 +75,9 @@ export class ListUsersComponent implements OnInit {
     this.activeDelete = false;
     this.activeEdit = false;
     this.activeNewUser = false;
+    this.errorEmail = '';
+    this.errorNick = '';
+    this.errorPass = '';
   }
 
   //abrir ventanas de dialogo//
@@ -120,7 +117,6 @@ export class ListUsersComponent implements OnInit {
   //activar ventanas//
   //activa la ventana de editar
   public editHandler(user: User) {
-    //TODO: Parsear usuarios en el backend
     this.selectedUser = {
       id: user.id,
       email: user.email,
@@ -150,7 +146,6 @@ export class ListUsersComponent implements OnInit {
               summary: 'Usuario editado correctamente',
             });
           }
-
           //recarga la lista de usuarios
           this.updateUsersList();
           //borra los datos del formulario
@@ -231,7 +226,58 @@ export class ListUsersComponent implements OnInit {
   }
 
   checkFormValidity() {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordPattern = /^[a-zA-Z0-9]{5,}$/;
+
+    const emailControl = new FormControl(
+      this.newUser.email,
+      Validators.pattern(emailPattern)
+    );
+    const passwordControl = new FormControl(
+      this.newUser.passwd,
+      Validators.pattern(passwordPattern)
+    );
+
+    const emailValid = !!this.newUser.email && emailControl.valid;
+    if (!emailValid) {
+      this.errorEmail = 'Formato de email incorrecto';
+    } else {
+      this.errorEmail = '';
+    }
+    const passwordValid = !!this.newUser.passwd && passwordControl.valid;
+    if (!passwordValid && this.newUser.passwd.length > 0) {
+      this.errorPass = 'La contraseña no tiene formato correcto [a-zA-Z0-9 5+]';
+    } else {
+      this.errorPass = '';
+    }
+    const nickValid = !!this.newUser.nick;
+
+    let emailExists;
+    if (emailValid) {
+      emailExists = this.usersList.some(
+        (user) => user.email === this.newUser.email
+      );
+
+      if (emailExists) {
+        this.errorEmail = 'Este email ya esta en uso';
+      } else {
+        this.errorEmail = '';
+      }
+    }
+    let nickExists;
+    if (nickValid) {
+      nickExists = this.usersList.some(
+        (user) => user.nick === this.newUser.nick
+      );
+
+      if (nickExists) {
+        this.errorNick = 'Este nick ya esta en uso';
+      } else {
+        this.errorNick = '';
+      }
+    }
+
     this.formCreate =
-      !!this.newUser.email && !!this.newUser.passwd && !!this.newUser.nick;
+      emailValid && passwordValid && nickValid && !emailExists && !nickExists;
   }
 }
