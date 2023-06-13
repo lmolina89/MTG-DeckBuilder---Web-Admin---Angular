@@ -70,8 +70,9 @@ export class ListUsersComponent implements OnInit {
   //boton cancelar
   public cancelHandler() {
     this.messageService.add({ severity: 'warn', summary: 'Cancelado' });
-    //limpio la variable selectedUser
+    //limpio la variables de los formularios
     this.selectedUser = new User();
+    this.newUser = new User();
     this.activeDelete = false;
     this.activeEdit = false;
     this.activeNewUser = false;
@@ -214,11 +215,15 @@ export class ListUsersComponent implements OnInit {
     this.loading = true;
     this.authService.logOut();
     //delay para que no cambie de ventana demasiado rapido
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Cerrando sesion...',
+    });
     _.delay(
       () => {
         this.router.navigate(['login']);
       },
-      500,
+      800,
       () => {
         this.loading = false;
       }
@@ -239,7 +244,7 @@ export class ListUsersComponent implements OnInit {
     );
 
     const emailValid = !!this.newUser.email && emailControl.valid;
-    if (!emailValid) {
+    if (!emailValid && this.newUser.email.length > 0) {
       this.errorEmail = 'Formato de email incorrecto';
     } else {
       this.errorEmail = '';

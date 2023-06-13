@@ -188,13 +188,12 @@
   <p-dialog
     header="Crear nuevo usuario"
     [(visible)]="activeNewUser"
-    [style]="{ width: '30vw' }"
-    [closable]="true"
+    [style]="{ width: '35vw' }"
   >
     <form class="formbox">
-      <div class="mb-4 mt-2 mx-4 d-flex flex-column">
+      <div class="d-flex flex-column">
         <!-- input email -->
-        <div class="d-flex justify-content-center my-3">
+        <div class="d-flex justify-content-center">
           <span class="p-float-label">
             <input
               id="email"
@@ -203,19 +202,21 @@
               name="email"
               type="email"
               [(ngModel)]="newUser.email"
+              aria-describedby="input-email"
               (ngModelChange)="checkFormValidity()"
+              [ngClass]="{ 'ng-invalid': errorEmail, 'ng-dirty': errorEmail }"
             />
             <label for="email" class="mb-3 font-bold">Email</label>
           </span>
         </div>
+        <div class="h-3rem flex justify-content-center">
+          <small *ngIf="errorEmail" id="input-email" class="p-error">{{
+            errorEmail
+          }}</small>
+        </div>
       </div>
-      <div class="h-1rem flex justify-content-center">
-        <p *ngIf="errorEmail" class="text-900 text-red-500 font-bold">
-          {{ errorEmail }}
-        </p>
-      </div>
-      <!-- input password -->
-      <div class="d-flex justify-content-center my-3">
+
+      <div class="d-flex justify-content-center">
         <span class="p-float-label">
           <input
             id="password"
@@ -224,18 +225,20 @@
             class="p-inputtext-lg"
             name="password"
             [(ngModel)]="newUser.passwd"
+            aria-describedby="input-pass"
             (ngModelChange)="checkFormValidity()"
+            [ngClass]="{ 'ng-invalid': errorPass, 'ng-dirty': errorPass }"
           />
           <label for="password" class="mb-3 font-bold">Password</label>
         </span>
       </div>
-      <div class="h-1rem flex justify-content-center">
-        <p *ngIf="errorPass" class="text-900 text-red-500 font-bold">
-          {{ errorPass }}
-        </p>
+      <div class="h-3rem flex justify-content-center">
+        <small *ngIf="errorPass" id="input-pass" class="p-error">{{
+          errorPass
+        }}</small>
       </div>
       <!-- input nick -->
-      <div class="d-flex justify-content-center my-3">
+      <div class="d-flex justify-content-center">
         <span class="p-float-label">
           <input
             id="nick"
@@ -243,18 +246,22 @@
             class="p-inputtext-lg"
             name="nick"
             type="text"
+            aria-describedby="input-nick"
             [(ngModel)]="newUser.nick"
             (ngModelChange)="checkFormValidity()"
+            [ngClass]="{ 'ng-invalid': errorNick, 'ng-dirty': errorNick }"
           />
           <label for="nick" class="mb-3 font-bold">Nick</label>
         </span>
       </div>
-      <div class="h-1rem flex justify-content-center">
-        <p *ngIf="errorNick" class="text-900 text-red-500 font-bold">
-          {{ errorNick }}
-        </p>
+      <div class="h-3rem flex justify-content-center">
+        <small *ngIf="errorNick" id="input-nick" class="p-error">{{
+          errorNick
+        }}</small>
       </div>
+
       <p-divider></p-divider>
+
       <!-- botones de guardar y cancelar -->
       <div class="flex justify-content-between mt-5">
         <p-button

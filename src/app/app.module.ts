@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { AuthService } from './auth/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +19,7 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-b
     LoginModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
