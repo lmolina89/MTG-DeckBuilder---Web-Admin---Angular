@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersListService } from '../users-list.service';
-import { GetUserResponse, StateOptions, User } from '../users-list.types';
+import { GetUserResponse, RegisterResponse, Response, StateOptions, UpdateUserResponse, User } from '../users-list.types';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import * as _ from 'lodash';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -136,11 +136,10 @@ export class ListUsersComponent implements OnInit {
   public saveHandler() {
     //Guardar usuario editado
     if (this.activeEdit) {
-      console.log('editando usuario...');
       //guarda el usuario editado
       this.listUsersService
         .updateUser(this.selectedUser)
-        .subscribe((response: any) => {
+        .subscribe((response: UpdateUserResponse) => {
           if (response.result == 'ok') {
             this.messageService.add({
               severity: 'success',
@@ -154,17 +153,15 @@ export class ListUsersComponent implements OnInit {
         });
     }
     if (this.activeNewUser) {
-      console.log('creando usuario...');
       this.listUsersService
         .createUser(this.newUser)
-        .subscribe((response: any) => {
+        .subscribe((response: RegisterResponse) => {
           if (response.result == 'ok') {
             this.messageService.add({
               severity: 'success',
               summary: 'Usuario creado correctamente',
             });
           }
-
           //recarga la lista de usuarios
           this.updateUsersList();
           //borra los datos del formulario
@@ -179,7 +176,8 @@ export class ListUsersComponent implements OnInit {
   public deleteUser(id: number | undefined) {
     this.loading = true;
     let userId = id || 0;
-    this.listUsersService.deleteUser(userId).subscribe((response: any) => {
+    this.listUsersService.deleteUser(userId).subscribe(
+      (response: Response) => {
       if (response.result == 'ok') {
         this.messageService.add({
           severity: 'success',
@@ -197,7 +195,6 @@ export class ListUsersComponent implements OnInit {
   }
 
   public newUserHandler() {
-    console.log('Nuevo usuario...');
     this.activeNewUser = true;
   }
 
@@ -231,57 +228,69 @@ export class ListUsersComponent implements OnInit {
   }
 
   checkFormValidity() {
+    //expresiones regulares
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordPattern = /^[a-zA-Z0-9]{5,}$/;
-
+    //valida el formato del email
     const emailControl = new FormControl(
       this.newUser.email,
       Validators.pattern(emailPattern)
     );
+    //valida el formato de la contraseña
     const passwordControl = new FormControl(
       this.newUser.passwd,
       Validators.pattern(passwordPattern)
     );
-
+    //true si el email no es undefined y tiene formato valido
     const emailValid = !!this.newUser.email && emailControl.valid;
+    //si el email no es valido muestra el error
     if (!emailValid && this.newUser.email.length > 0) {
       this.errorEmail = 'Formato de email incorrecto';
     } else {
       this.errorEmail = '';
     }
+
+    //true si la contraseña no es undefined y tiene formato valido
     const passwordValid = !!this.newUser.passwd && passwordControl.valid;
+    //si la contraseña no es valida muestra el error
     if (!passwordValid && this.newUser.passwd.length > 0) {
-      this.errorPass = 'La contraseña no tiene formato correcto [a-zA-Z0-9 5+]';
+      this.errorPass =
+        'La contraseña no tiene formato correcto [a-z A-Z 0-9 5+]';
     } else {
       this.errorPass = '';
     }
+
+    //comprueba que el nick no es undefined
     const nickValid = !!this.newUser.nick;
 
+    //comprueba que el email no esta en uso
     let emailExists;
     if (emailValid) {
       emailExists = this.usersList.some(
         (user) => user.email === this.newUser.email
       );
-
+      //si esta en uso muestra un error
       if (emailExists) {
         this.errorEmail = 'Este email ya esta en uso';
       } else {
         this.errorEmail = '';
       }
     }
+
+    //comprueba que el nick no esta en uso
     let nickExists;
     if (nickValid) {
       nickExists = this.usersList.some(
         (user) => user.nick === this.newUser.nick
       );
-
+      //si esta en uso muestra un error
       if (nickExists) {
         this.errorNick = 'Este nick ya esta en uso';
       } else {
         this.errorNick = '';
       }
     }
-
+    //si todos los datos del formulario son correctos, activa el boton de guardar
     this.formCreate =
       emailValid && passwordValid && nickValid && !emailExists && !nickExists;
   }

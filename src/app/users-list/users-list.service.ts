@@ -2,7 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { GetUserResponse, RegisterResponse, RegisterUserBody, UpdateUserBody, User } from './users-list.types';
+import { GetUserResponse, RegisterResponse, RegisterUserBody, Response, UpdateUserBody, UpdateUserResponse, User } from './users-list.types';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +32,7 @@ export class UsersListService {
     );
   }
 
-  public updateUser(user: User): Observable<any> {
+  public updateUser(user: User): Observable<UpdateUserResponse> {
     const updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${user.id}`;
     const updateBody = {
       email: user.email,
@@ -43,7 +43,7 @@ export class UsersListService {
     let apiKey: string | null = sessionStorage.getItem('api-key');
     const headers = new HttpHeaders().set('api-key', apiKey || '');
     return this.http
-      .put<any>(updateUserUrl, updateBody, { headers: headers })
+      .put<UpdateUserResponse>(updateUserUrl, updateBody, { headers: headers })
       .pipe(
         catchError((e) => {
           if (isDevMode()) {
@@ -54,7 +54,7 @@ export class UsersListService {
       );
   }
 
-  public createUser(user: User): Observable<any> {
+  public createUser(user: User): Observable<RegisterResponse> {
     const createUrl: string = `${this.baseUrl}${environment.registerRoute}`;
     const registerBody: RegisterUserBody = {
       email: user.email,
@@ -62,7 +62,7 @@ export class UsersListService {
       nick: user.nick ?? ''
     }
     console.log(registerBody)
-    return this.http.post<any>(createUrl, registerBody).pipe(
+    return this.http.post<RegisterResponse>(createUrl, registerBody).pipe(
       catchError((e) => {
         if (isDevMode()) {
           console.error(`Error al crear usuario `);
@@ -74,7 +74,7 @@ export class UsersListService {
 
   }
 
-  public deleteUser(id: number) {
+  public deleteUser(id: number):Observable<Response> {
     let deleteUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${id}`;
     let apiKey: string | null = sessionStorage.getItem('api-key');
     const headers = new HttpHeaders().set('api-key', apiKey || '');

@@ -9,54 +9,53 @@ import { ApiLoginBody, ApiLoginResponse } from '../login.types';
   styleUrls: ['./form-login.component.css'],
 })
 export class FormLoginComponent {
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
   error: boolean = false;
   errorMessage: string = '';
   userData?: ApiLoginResponse;
-  // email: string = 'lmolinamoreno@hotmail.com';
-  // password: string = 'lmolina';
-  email: string = 'admin@admin.com';
-  password: string = 'admin';
+
+  email: string = '';
+  password: string = '';
 
   public onSubmit(event: any) {
     event.preventDefault();
-    this.email = event.target.elements.email.value
-    this.password = event.target.elements.password.value
+    this.email = event.target.elements.email.value;
+    this.password = event.target.elements.password.value;
     const loginBody: ApiLoginBody = {
       email: this.email,
-      passwd: this.password
-    }
-    this.authService.doLogin(loginBody).subscribe((userData) => {
-      this.userData = userData;
-      if (!userData.admin) {
-        this.error = true;
-        this.errorMessage = 'No tienes permisos de administrador'
-      }
-      console.log(userData);
-      if (this.authService.isLoggedIn()) {
-        this.router.navigate(['/users'])
-          .then(() => {
-            console.log('Cambiando de pagina...');
-          })
-          .catch(error => {
-            console.error('Error al navegar:', error);
-          });
-      }
-    },
+      passwd: this.password,
+    };
+    this.authService.doLogin(loginBody).subscribe(
+      (userData: ApiLoginResponse) => {
+        this.userData = userData;
+        if (!userData.admin) {
+          this.error = true;
+          this.errorMessage = 'No tienes permisos de administrador';
+        }
+        if (this.authService.isLoggedIn()) {
+          this.router
+            .navigate(['/users'])
+            .then(() => {
+              console.log('Cambiando de pagina...');
+            })
+            .catch((error) => {
+              console.error('Error al navegar:', error);
+            });
+        }
+      },
       (error) => {
         //recoje la respuesta de error de la api
         const errorResponse = error.error?.error;
         if (errorResponse.result == 'error') {
           //muestra el mensaje de error en el login
           this.error = true;
-          this.errorMessage = errorResponse.details
+          this.errorMessage = errorResponse.details;
         } else {
           //si no se conoce el error muestra uno generico
           this.error = true;
-          this.errorMessage = 'Ha ocurrido algun error al hacer login'
+          this.errorMessage = 'Ha ocurrido algun error al hacer login';
         }
-      });
-
+      }
+    );
   }
 }

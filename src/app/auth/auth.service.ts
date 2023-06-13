@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 import { ApiLoginBody, ApiLoginResponse } from '../login/login.types';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class AuthService {
 
   doLogin(loginBody: ApiLoginBody): Observable<ApiLoginResponse> {
     let loginUrl: string = `${this.baseUrl}${environment.authRoute}`;
-  
+
     return this.http.post<ApiLoginResponse>(loginUrl, loginBody).pipe(
       catchError((e) => {
         if (isDevMode()) {

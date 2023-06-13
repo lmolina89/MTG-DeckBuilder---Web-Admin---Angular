@@ -5,27 +5,46 @@
     </div>
 
     <form (ngSubmit)="onSubmit($event)" class="formbox">
-      <div class=" mb-4 mt-2 mx-4">
+      <div class="mb-4 mt-2 mx-4">
         <span class="p-float-label">
-          <input id="email" pInputText class="p-inputtext-lg input-lg-custom" name="email" [(ngModel)]="email" />
+          <input
+            id="email"
+            pInputText
+            class="p-inputtext-lg input-lg-custom"
+            name="email"
+            [(ngModel)]="email"
+          />
           <label for="email">Email</label>
         </span>
       </div>
 
-      <div class=" mb-4 mt-2 mx-4">
+      <div class="mb-4 mt-2 mx-4">
         <span class="p-float-label">
-          <input id="password" pPassword type="password" class="p-inputtext-lg input-lg-custom" name="password"
-            [(ngModel)]="password" />
+          <input
+            id="password"
+            pPassword
+            type="password"
+            class="p-inputtext-lg input-lg-custom"
+            name="password"
+            [(ngModel)]="password"
+          />
           <label for="password">Password</label>
         </span>
       </div>
       <p-divider></p-divider>
       <div class="h-1rem flex justify-content-center">
-        <p *ngIf="error" class="text-900 text-red-500 font-bold">{{errorMessage}}</p>
+        <p *ngIf="error" class="text-900 text-red-500 font-bold">
+          {{ errorMessage }}
+        </p>
       </div>
-      
+
       <div class="flex justify-content-center mt-5">
-        <p-button type="submit" label="Entrar" styleClass=" p-button-raised"  title="Iniciar sesion"></p-button>
+        <p-button
+          type="submit"
+          label="Entrar"
+          styleClass=" p-button-raised"
+          title="Iniciar sesion"
+        ></p-button>
       </div>
     </form>
   </p-card>

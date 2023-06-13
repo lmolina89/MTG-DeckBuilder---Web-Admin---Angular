@@ -39,6 +39,11 @@ export interface UpdateUserBody {
   active: boolean
 }
 
+export interface UpdateUserResponse{
+  result:string
+  details?: string
+}
+
 export interface Response {
   result?: 'ok' | 'error'
   details?: string

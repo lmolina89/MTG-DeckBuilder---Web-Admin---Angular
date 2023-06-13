@@ -5,5 +5,5 @@ export const environment = {
   registerRoute: 'register',
   userDeckRoute: 'deck',
   deckCardRoute: 'card',
-  usersRoute: 'user'
-}
+  usersRoute: 'user',
+};
