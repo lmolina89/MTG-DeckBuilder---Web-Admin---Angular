@@ -16,7 +16,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
 
-            "outputPath": "dist/prueba-login-angular",
+            "outputPath": "dist/mtg-deckbuilder-web-admin",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
