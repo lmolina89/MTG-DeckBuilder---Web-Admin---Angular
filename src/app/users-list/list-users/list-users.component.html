@@ -13,7 +13,6 @@
       <tr>
         <th>Nick</th>
         <th>Email</th>
-        <th>Imagen</th>
         <th>Activo</th>
         <th>Administrador</th>
         <th>
@@ -41,7 +40,6 @@
       <tr>
         <td>{{ user.nick }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.imgUri }}</td>
         <td>{{ user.active == 1 ? "si" : "no" }}</td>
         <td>{{ user.admin == 1 ? "si" : "no" }}</td>
         <!--      boton editar-->
@@ -58,7 +56,7 @@
         <!--      boton eliminar-->
         <td>
           <p-button
-          [disabled]="user.admin == true"
+            [disabled]="user.admin == true"
             icon="pi pi-times"
             label="Eliminar"
             styleClass="p-button-rounded p-button-raised p-button-danger p-button-sm"
