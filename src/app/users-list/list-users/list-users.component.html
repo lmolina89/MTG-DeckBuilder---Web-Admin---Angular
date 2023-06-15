@@ -58,10 +58,11 @@
         <!--      boton eliminar-->
         <td>
           <p-button
+          [disabled]="user.admin == true"
             icon="pi pi-times"
             label="Eliminar"
             styleClass="p-button-rounded p-button-raised p-button-danger p-button-sm"
-            (click)="confirmDelete(user)"
+            (onClick)="confirmDelete(user)"
             title="Eliminar usuario"
           >
           </p-button>
