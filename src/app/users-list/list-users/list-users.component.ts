@@ -42,7 +42,7 @@ export class ListUsersComponent implements OnInit {
     private messageService: MessageService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -121,12 +121,8 @@ export class ListUsersComponent implements OnInit {
     this.selectedUser = {
       id: user.id,
       email: user.email,
-      passwd: user.passwd,
-      imageUri: user.imageUri,
-      token: user.token,
       active: user.active == 1,
-      admin: user.admin == 1,
-      nick: user.nick,
+      admin: user.admin == 1
     } as User;
     this.activeEdit = true;
   }
@@ -178,19 +174,19 @@ export class ListUsersComponent implements OnInit {
     let userId = id || 0;
     this.listUsersService.deleteUser(userId).subscribe(
       (response: Response) => {
-      if (response.result == 'ok') {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Usuario eliminado correctamente',
-        });
-      } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'No se ha eliminado el usuario',
-        });
-      }
-      this.updateUsersList();
-    });
+        if (response.result == 'ok') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Usuario eliminado correctamente',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'No se ha eliminado el usuario',
+          });
+        }
+        this.updateUsersList();
+      });
     this.activeDelete = false;
   }
 
@@ -244,7 +240,7 @@ export class ListUsersComponent implements OnInit {
     //true si el email no es undefined y tiene formato valido
     const emailValid = !!this.newUser.email && emailControl.valid;
     //si el email no es valido muestra el error
-    if (!emailValid && this.newUser.email.length > 0) {
+    if (!emailValid && this.newUser.email && this.newUser.email.length > 0) {
       this.errorEmail = 'Formato de email incorrecto';
     } else {
       this.errorEmail = '';
@@ -253,7 +249,7 @@ export class ListUsersComponent implements OnInit {
     //true si la contraseña no es undefined y tiene formato valido
     const passwordValid = !!this.newUser.passwd && passwordControl.valid;
     //si la contraseña no es valida muestra el error
-    if (!passwordValid && this.newUser.passwd.length > 0) {
+    if (!passwordValid && this.newUser.passwd && this.newUser.passwd.length > 0) {
       this.errorPass =
         'La contraseña no tiene formato correcto [a-z A-Z 0-9 5+]';
     } else {

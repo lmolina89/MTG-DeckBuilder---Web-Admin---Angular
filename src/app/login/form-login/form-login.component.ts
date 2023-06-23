@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ApiLoginBody, ApiLoginResponse } from '../login.types';
@@ -9,13 +9,15 @@ import { ApiLoginBody, ApiLoginResponse } from '../login.types';
   styleUrls: ['./form-login.component.css'],
 })
 export class FormLoginComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
   error: boolean = false;
   errorMessage: string = '';
   userData?: ApiLoginResponse;
 
-  email: string = '';
-  password: string = '';
+  email: string = 'admin@admin.com';
+  password: string = 'admin';
+  // email: string = '';
+  // password: string = '';
 
   public onSubmit(event: any) {
     event.preventDefault();

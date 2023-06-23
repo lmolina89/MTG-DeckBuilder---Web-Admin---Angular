@@ -36,10 +36,11 @@ export class UsersListService {
     const updateUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${user.id}`;
     const updateBody = {
       email: user.email,
-      passwd: user.passwd,
       admin: user.admin,
       active: user.active,
     };
+    console.log(updateBody);
+
     let apiKey: string | null = sessionStorage.getItem('api-key');
     const headers = new HttpHeaders().set('api-key', apiKey || '');
     return this.http
@@ -57,8 +58,8 @@ export class UsersListService {
   public createUser(user: User): Observable<RegisterResponse> {
     const createUrl: string = `${this.baseUrl}${environment.registerRoute}`;
     const registerBody: RegisterUserBody = {
-      email: user.email,
-      passwd: user.passwd,
+      email: user.email ? user.email : '',
+      passwd: user.passwd ? user.passwd : '',
       nick: user.nick ?? ''
     }
     console.log(registerBody)
@@ -74,7 +75,7 @@ export class UsersListService {
 
   }
 
-  public deleteUser(id: number):Observable<Response> {
+  public deleteUser(id: number): Observable<Response> {
     let deleteUserUrl: string = `${this.baseUrl}${environment.usersRoute}?id=${id}`;
     let apiKey: string | null = sessionStorage.getItem('api-key');
     const headers = new HttpHeaders().set('api-key', apiKey || '');
