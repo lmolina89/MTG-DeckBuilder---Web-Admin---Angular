@@ -1,0 +1,100 @@
+<p-dialog
+    header="Editar usuario"
+    [(visible)]="activeEdit"
+    [style]="{ width: '45vw' }"
+    [closable]="true"
+  > 
+
+    <form class="formbox">
+      <div class="mb-4 mt-2 mx-4 d-flex justify-content-around">
+        <!-- input email -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input
+              id="email"
+              pInputText
+              class="p-inputtext-lg"
+              name="email"
+              [(ngModel)]="user.email"
+              [disabled]="true"
+            />
+            <label for="email" class="mb-3 font-bold">Email</label>
+          </span>
+        </div>
+        <!-- input nick -->
+        <div class="d-flex justify-content-center my-3">
+          <span class="p-float-label">
+            <input
+              id="nick"
+              pInputText
+              class="p-inputtext-lg"
+              name="nick"
+              [(ngModel)]="user.nick"
+              [disabled]="true"
+            />
+            <label for="nick" class="mb-3 font-bold">Nick</label>
+          </span>
+        </div>
+      </div>
+      <div class="flex justify-content-around mt-5">
+        <!-- boton seleccion activo -->
+        <div>
+          <div class="flex justify-content-center">
+            <label for="active" class="mb-3 font-bold">Activo</label>
+          </div>
+          <div>
+            <p-selectButton
+              name="active"
+              [options]="activeStateOptions"
+              [(ngModel)]="user.active"
+              optionLabel="label"
+              optionValue="value"
+              (ngModelChange)="formEdit = true"
+            >
+            </p-selectButton>
+          </div>
+        </div>
+        <!-- boton seleccion admin -->
+        <div>
+          <div class="flex justify-content-center">
+            <label for="admin" class="mb-3 font-bold">Administrador</label>
+          </div>
+          <div>
+            <p-selectButton
+              name="admin"
+              [options]="adminStateOptions"
+              [(ngModel)]="user.admin"
+              optionLabel="label"
+              optionValue="value"
+              (ngModelChange)="formEdit = true"
+            >
+            </p-selectButton>
+          </div>
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <!-- botones de guardar y cancelar -->
+      <div class="flex justify-content-between mt-5">
+        <p-button
+          label="Guardar"
+          styleClass="p-button-raised ml-8"
+          title="Guardar los cambios"
+          [disabled]="!formEdit"
+          (onClick)="onSave()"
+        >
+        <!-- (onClick)="confirmEditSave()" -->
+
+        </p-button>
+        <p-button
+          type="button"
+          label="Cancelar"
+          styleClass="
+        p-button-raised
+        p-button-danger mr-8"
+          (click)="onCancel()"
+          title="Cancelar edicion"
+        >
+        </p-button>
+      </div>
+    </form>
+  </p-dialog>

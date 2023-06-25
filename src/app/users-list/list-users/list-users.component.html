@@ -80,209 +80,23 @@
 </div>
 
 <!--          formulario de editar         -->
-<ng-container *ngIf="activeEdit">
-  <p-dialog
-    header="Editar usuario"
-    [(visible)]="activeEdit"
-    [style]="{ width: '45vw' }"
-    [closable]="true"
-  >
-    <form class="formbox">
-      <div class="mb-4 mt-2 mx-4 d-flex justify-content-around">
-        <!-- input email -->
-        <div class="d-flex justify-content-center my-3">
-          <span class="p-float-label">
-            <input
-              id="email"
-              pInputText
-              class="p-inputtext-lg"
-              name="email"
-              [(ngModel)]="selectedUser.email"
-              [disabled]="true"
-            />
-            <label for="email" class="mb-3 font-bold">Email</label>
-          </span>
-        </div>
-        <!-- input nick -->
-        <div class="d-flex justify-content-center my-3">
-          <span class="p-float-label">
-            <input
-              id="nick"
-              pInputText
-              class="p-inputtext-lg"
-              name="nick"
-              [(ngModel)]="selectedUser.nick"
-              [disabled]="true"
-            />
-            <label for="nick" class="mb-3 font-bold">Nick</label>
-          </span>
-        </div>
-      </div>
-      <div class="flex justify-content-around mt-5">
-        <!-- boton seleccion activo -->
-        <div>
-          <div class="flex justify-content-center">
-            <label for="active" class="mb-3 font-bold">Activo</label>
-          </div>
-          <div>
-            <p-selectButton
-              name="active"
-              [options]="activeStateOptions"
-              [(ngModel)]="selectedUser.active"
-              optionLabel="label"
-              optionValue="value"
-              (ngModelChange)="formEdit = true"
-            >
-            </p-selectButton>
-          </div>
-        </div>
-        <!-- boton seleccion admin -->
-        <div>
-          <div class="flex justify-content-center">
-            <label for="admin" class="mb-3 font-bold">Administrador</label>
-          </div>
-          <div>
-            <p-selectButton
-              name="admin"
-              [options]="adminStateOptions"
-              [(ngModel)]="selectedUser.admin"
-              optionLabel="label"
-              optionValue="value"
-              (ngModelChange)="formEdit = true"
-            >
-            </p-selectButton>
-          </div>
-        </div>
-      </div>
-      <p-divider></p-divider>
-      <!-- botones de guardar y cancelar -->
-      <div class="flex justify-content-between mt-5">
-        <p-button
-          label="Guardar"
-          styleClass="p-button-raised ml-8"
-          (onClick)="confirmEditSave()"
-          title="Guardar los cambios"
-          [disabled]="!formEdit"
-        >
-        </p-button>
-        <p-button
-          type="button"
-          label="Cancelar"
-          styleClass="
-        p-button-raised
-        p-button-danger mr-8"
-          (click)="cancelHandler()"
-          title="Cancelar edicion"
-        >
-        </p-button>
-      </div>
-    </form>
-  </p-dialog>
-</ng-container>
+<app-edit-form
+  [selectedUser]="selectedUser"
+  *ngIf="activeEdit"
+  (cancelEvent)="cancelHandler()"
+  (saveEvent)="confirmEditSave($event)"
+>
+</app-edit-form>
 <!--          fin formulario editar           -->
 
 <!--          formulario nuevo usuario           -->
-<ng-container *ngIf="activeNewUser">
-  <p-dialog
-    header="Crear nuevo usuario"
-    [(visible)]="activeNewUser"
-    [style]="{ width: '35vw' }"
-  >
-    <form class="formbox">
-      <div class="d-flex flex-column">
-        <!-- input email -->
-        <div class="d-flex justify-content-center">
-          <span class="p-float-label">
-            <input
-              id="email"
-              pInputText
-              class="p-inputtext-lg"
-              name="email"
-              type="email"
-              [(ngModel)]="newUser.email"
-              aria-describedby="input-email"
-              (ngModelChange)="checkFormValidity()"
-              [ngClass]="{ 'ng-invalid': errorEmail, 'ng-dirty': errorEmail }"
-            />
-            <label for="email" class="mb-3 font-bold">Email</label>
-          </span>
-        </div>
-        <div class="h-3rem flex justify-content-center">
-          <small *ngIf="errorEmail" id="input-email" class="p-error">{{
-            errorEmail
-          }}</small>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <span class="p-float-label">
-          <input
-            id="password"
-            type="password"
-            pPassword
-            class="p-inputtext-lg"
-            name="password"
-            [(ngModel)]="newUser.passwd"
-            aria-describedby="input-pass"
-            (ngModelChange)="checkFormValidity()"
-            [ngClass]="{ 'ng-invalid': errorPass, 'ng-dirty': errorPass }"
-          />
-          <label for="password" class="mb-3 font-bold">Password</label>
-        </span>
-      </div>
-      <div class="h-3rem flex justify-content-center">
-        <small *ngIf="errorPass" id="input-pass" class="p-error">{{
-          errorPass
-        }}</small>
-      </div>
-      <!-- input nick -->
-      <div class="d-flex justify-content-center">
-        <span class="p-float-label">
-          <input
-            id="nick"
-            pInputText
-            class="p-inputtext-lg"
-            name="nick"
-            type="text"
-            aria-describedby="input-nick"
-            [(ngModel)]="newUser.nick"
-            (ngModelChange)="checkFormValidity()"
-            [ngClass]="{ 'ng-invalid': errorNick, 'ng-dirty': errorNick }"
-          />
-          <label for="nick" class="mb-3 font-bold">Nick</label>
-        </span>
-      </div>
-      <div class="h-3rem flex justify-content-center">
-        <small *ngIf="errorNick" id="input-nick" class="p-error">{{
-          errorNick
-        }}</small>
-      </div>
-
-      <p-divider></p-divider>
-
-      <!-- botones de guardar y cancelar -->
-      <div class="flex justify-content-between mt-5">
-        <p-button
-          label="Guardar"
-          styleClass="p-button-raised ml-8"
-          (onClick)="confirmCreateSave()"
-          title="Guardar nuevo usuario"
-          [disabled]="!formCreate"
-        >
-        </p-button>
-        <p-button
-          label="Cancelar"
-          styleClass="
-        p-button-raised
-        p-button-danger mr-8"
-          (click)="cancelHandler()"
-          title="Cancelar crear usuario"
-        >
-        </p-button>
-      </div>
-    </form>
-  </p-dialog>
-</ng-container>
+<app-create-form
+  [newUser]="newUser"
+  *ngIf="activeNewUser"
+  (cancelEvent)="cancelHandler()"
+  (saveEvent)="confirmCreateSave($event)"
+>
+</app-create-form>
 <!--          fin formulario nuevo usuario           -->
 
 <!--          dialogo de confirmacion         -->

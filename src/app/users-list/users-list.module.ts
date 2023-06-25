@@ -18,9 +18,11 @@ import { PasswordModule } from 'primeng/password';
 import { ImageModule } from 'primeng/image';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { RippleModule } from 'primeng/ripple';
+import { EditFormComponent } from './edit-form/edit-form.component';
+import { CreateFormComponent } from './create-form/create-form.component';
 
 @NgModule({
-  declarations: [ListUsersComponent],
+  declarations: [ListUsersComponent, EditFormComponent, CreateFormComponent],
   imports: [
     CommonModule,
     RouterModule,
